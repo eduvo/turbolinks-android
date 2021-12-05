@@ -1,0 +1,67 @@
+co/faria/turbolinks/TurbolinksTestActivity.java
+ co.faria.turbolinks.TurbolinksTestActivity
+co/faria/turbolinks/BuildConfig.java
+ co.faria.turbolinks.BuildConfig
+co/faria/turbolinks/ActivityResultListener.java
+ co.faria.turbolinks.ActivityResultListener
+co/faria/turbolinks/TurbolinksView.java
+ co.faria.turbolinks.TurbolinksView
+ co.faria.turbolinks.TurbolinksView$1
+ co.faria.turbolinks.TurbolinksView$2
+co/faria/turbolinks/TurbolinksSwipeRefreshLayout.java
+ co.faria.turbolinks.TurbolinksSwipeRefreshLayout
+ co.faria.turbolinks.TurbolinksSwipeRefreshLayout$1
+co/faria/turbolinks/TurbolinksAdapter.java
+ co.faria.turbolinks.TurbolinksAdapter
+co/faria/turbolinks/TurbolinksHelper.java
+ co.faria.turbolinks.Debounce
+ co.faria.turbolinks.TurbolinksHelper
+ co.faria.turbolinks.TurbolinksHelper$1
+ co.faria.turbolinks.TurbolinksHelper$2
+co/faria/turbolinks/TurbolinksSession.java
+ co.faria.turbolinks.TurbolinksSession
+ co.faria.turbolinks.TurbolinksSession$1
+ co.faria.turbolinks.TurbolinksSession$1$1
+ co.faria.turbolinks.TurbolinksSession$1$1$1
+ co.faria.turbolinks.TurbolinksSession$10
+ co.faria.turbolinks.TurbolinksSession$11
+ co.faria.turbolinks.TurbolinksSession$12
+ co.faria.turbolinks.TurbolinksSession$13
+ co.faria.turbolinks.TurbolinksSession$2
+ co.faria.turbolinks.TurbolinksSession$3
+ co.faria.turbolinks.TurbolinksSession$4
+ co.faria.turbolinks.TurbolinksSession$5
+ co.faria.turbolinks.TurbolinksSession$5$1
+ co.faria.turbolinks.TurbolinksSession$6
+ co.faria.turbolinks.TurbolinksSession$7
+ co.faria.turbolinks.TurbolinksSession$8
+ co.faria.turbolinks.TurbolinksSession$9
+co/faria/turbolinks/ActivityResultListenerRegistry.java
+ co.faria.turbolinks.ActivityResultListenerRegistry
+co/faria/turbolinks/TurbolinksLog.java
+ co.faria.turbolinks.TurbolinksLog
+co/faria/turbolinks/TLWebviewCookieHandler.java
+ co.faria.turbolinks.TLWebviewCookieHandler
+co/faria/turbolinks/TurbolinksJSExecutionResultCallback.java
+ co.faria.turbolinks.TurbolinksJSExecutionResultCallback
+co/faria/turbolinks/TurbolinkWebView.java
+ co.faria.turbolinks.TurbolinkWebView
+ co.faria.turbolinks.TurbolinkWebView$1
+ co.faria.turbolinks.TurbolinkWebView$2
+ co.faria.turbolinks.TurbolinkWebView$OnScrollViewIdleListener
+ co.faria.turbolinks.TurbolinkWebView$OnScrollingFinishedListener
+ co.faria.turbolinks.TurbolinkWebView$OnYClampedListener
+co/faria/turbolinks/TLWebViewNavigationAdapter.java
+ co.faria.turbolinks.TLWebViewNavigationAdapter
+co/faria/turbolinks/TurbolinksSwipeRefreshLayoutCallback.java
+ co.faria.turbolinks.TurbolinksSwipeRefreshLayoutCallback
+co/faria/turbolinks/TLFileChooserInterceptor.java
+ co.faria.turbolinks.TLFileChooserInterceptor
+co/faria/turbolinks/TLChromeClientWithFileChooser.java
+ co.faria.turbolinks.TLChromeClientWithFileChooser
+ co.faria.turbolinks.TLChromeClientWithFileChooser$1
+ co.faria.turbolinks.TLChromeClientWithFileChooser$2
+ co.faria.turbolinks.TLChromeClientWithFileChooser$3
+ co.faria.turbolinks.TLChromeClientWithFileChooser$4
+ co.faria.turbolinks.TLChromeClientWithFileChooser$5
+ co.faria.turbolinks.TLChromeClientWithFileChooser$RandomNumberGeneratorHolder
