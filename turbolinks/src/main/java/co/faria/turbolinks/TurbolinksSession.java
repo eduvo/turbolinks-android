@@ -38,6 +38,8 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import okhttp3.*;
 
+import co.faria.turbolinks.R;
+
 /**
  * <p>The main concrete class to use Turbolinks 5 in your app.</p>
  */

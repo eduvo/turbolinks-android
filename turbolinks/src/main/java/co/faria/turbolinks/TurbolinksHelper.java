@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.MutableContextWrapper;
 import android.os.Handler;
 import android.os.Message;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
@@ -14,8 +15,6 @@ import android.webkit.WebView;
 import android.widget.FrameLayout;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
-import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -115,7 +114,7 @@ class TurbolinksHelper {
                     params[i] = gson.toJson(params[i]);
                 }
 
-                fullJs = String.format("javascript: %s(%s);", functionName, StringUtils.join(params, ","));
+                fullJs = String.format("javascript: %s(%s);", functionName, TextUtils.join(",", params));
             } else {
                 fullJs = String.format("javascript: %s();", functionName);
             }
