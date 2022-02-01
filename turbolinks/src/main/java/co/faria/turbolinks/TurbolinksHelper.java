@@ -176,7 +176,7 @@ class TurbolinksHelper {
     private static void configureWebViewDefaults(WebView webView) {
         WebSettings settings = webView.getSettings();
         settings.setJavaScriptEnabled(true);
-        //settings.setDomStorageEnabled(true);
+        settings.setDomStorageEnabled(true);
         settings.setDatabaseEnabled(true);
 
         webView.setWebChromeClient(new WebChromeClient());
