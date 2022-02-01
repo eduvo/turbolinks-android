@@ -419,7 +419,7 @@ public class TurbolinksSession implements TurbolinksSwipeRefreshLayoutCallback, 
             this.webView.setWebChromeClient(null);
 
             webView.getSettings().setSupportMultipleWindows(true);
-            this.webView.setWebChromeClient(new TLChromeClientWithFileChooser(this.activity));
+            this.webView.setWebChromeClient(new TLChromeClientWithFileChooser(this.activity, this.turbolinksAdapter));
 
             // reassign progressView
             if (progressView != null) {

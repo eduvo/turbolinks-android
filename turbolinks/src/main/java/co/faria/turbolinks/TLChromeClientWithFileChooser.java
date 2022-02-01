@@ -54,6 +54,7 @@ public class TLChromeClientWithFileChooser extends WebChromeClient implements Ac
     private int OTHER_PERMISSION_REQUEST_CODE = 1009;
 
     private Activity activity;
+    private TurbolinksAdapter turbolinksAdapter;
     private ValueCallback<Uri[]> filePathCallback;
     private Uri mediaUri;
 
@@ -94,11 +95,7 @@ public class TLChromeClientWithFileChooser extends WebChromeClient implements Ac
                 if (url != null) {
                     Uri current = Uri.parse(view.getUrl());
                     if (url.getHost() != null && (url.getHost().compareToIgnoreCase(current.getHost()) == 0)) {
-                        if (activity instanceof TLWebViewNavigationAdapter) {
-                            ((TLWebViewNavigationAdapter) activity).visitProposedToLocationWithAction(url.toString(), "advance");
-                        } else {
-                            sourceWebView.loadUrl(url.toString());
-                        }
+                        turbolinksAdapter.visitProposedToLocationWithAction(url.toString(), "advance");
                     } else {
                         openExternalURL(activity, url.toString());
                     }
@@ -112,14 +109,14 @@ public class TLChromeClientWithFileChooser extends WebChromeClient implements Ac
         return true;
     }
 
-    public TLChromeClientWithFileChooser(Activity activity) {
+    public TLChromeClientWithFileChooser(Activity activity, TurbolinksAdapter turbolinksAdapter) {
         this.activity = activity;
+        this.turbolinksAdapter = turbolinksAdapter;
 
         if ((this.activity != null) && (this.activity instanceof ActivityResultListenerRegistry)) {
             ((ActivityResultListenerRegistry) this.activity).registerActivityResultListener(this);
         }
     }
-
 
     @Override
     public boolean onJsConfirm(WebView view, String url, String message, final JsResult result) {
