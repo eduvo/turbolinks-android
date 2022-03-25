@@ -65,7 +65,8 @@ class TurbolinksSwipeRefreshLayout extends SwipeRefreshLayout {
         // no callback registered, ask webView directly.
         // we don't care for other child views
         if (webView != null) {
-            return (webView.getScrollY() > 0);
+            return (webView.canScrollVertically(-1));
+            //return (webView.getScrollY() > 0);
         }
         return true; // ignore pullToRefresh
     }
