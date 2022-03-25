@@ -1191,7 +1191,8 @@ public class TurbolinksSession implements TurbolinksSwipeRefreshLayoutCallback, 
     @Override
     public boolean canChildScrollUp(@NonNull SwipeRefreshLayout parent, @Nullable View child) {
         if (pullToRefreshEnabled && (this.webView != null) && (child != null)) {
-            return (this.webView.getScrollY() > 0);
+            return (this.webView.canScrollVertically(-1));
+//          return (this.webView.getScrollY() > 0);
         }
         return true; // we can scroll up => ignore pullToRefresh
     }
