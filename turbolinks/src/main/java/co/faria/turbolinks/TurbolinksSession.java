@@ -521,23 +521,13 @@ public class TurbolinksSession implements TurbolinksSwipeRefreshLayoutCallback, 
         if (turbolinksIsReady) {
             visitCurrentLocationWithTurbolinks();
         } else {
-            if (!turbolinksIsReady && !coldBootInProgress) {
-                webView.stopLoading();
-                TurbolinksLog.d("Cold booting: " + location);
-                webView.loadUrl(location);
-            }
+            webView.stopLoading();
+            TurbolinksLog.d("Cold booting: " + location);
+            webView.loadUrl(location);
         }
 
         // Reset so that cached snapshot is not the default for the next visit
         restoreWithCachedSnapshot = false;
-
-        /*
-        if (!turbolinksIsReady && coldBootInProgress), we don't fire a new visit. This is
-        typically a slow connection load. This allows the previous cold boot to finish (inject TL).
-        No matter what, if new requests are sent to Turbolinks via Turbolinks.location, we'll
-        always have the last desired location. And when setTurbolinksIsReady(true) is called,
-        we open that last location.
-        */
     }
 
     // ---------------------------------------------------
