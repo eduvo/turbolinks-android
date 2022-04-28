@@ -148,6 +148,7 @@ public class TurbolinksSession implements TurbolinksSwipeRefreshLayoutCallback, 
                 @Override
                 public void onPageStarted(WebView view, String url, Bitmap favicon) {
                     coldBootInProgress = true;
+                    bridgeInjectionInProgress = false;
                 }
 
                 @Override
