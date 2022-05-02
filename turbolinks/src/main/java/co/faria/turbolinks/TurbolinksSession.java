@@ -591,12 +591,16 @@ public class TurbolinksSession implements TurbolinksSwipeRefreshLayoutCallback, 
     public void visitProposedToLocationWithAction(final String location, final String action) {
         TurbolinksLog.d("visitProposedToLocationWithAction called");
 
-        TurbolinksHelper.runOnMainThread(activity, new Runnable() {
-            @Override
-            public void run() {
-                turbolinksAdapter.visitProposedToLocationWithAction(location, action);
-            }
-        });
+        if (location != null) {
+            TurbolinksHelper.runOnMainThread(activity, new Runnable() {
+                @Override
+                public void run() {
+                    turbolinksAdapter.visitProposedToLocationWithAction(location, action != null ? action : ACTION_ADVANCE);
+                }
+            });
+        } else {
+            TurbolinksLog.e("visitProposedToLocationWithAction called with NULL location!");
+        }
     }
 
     /**
