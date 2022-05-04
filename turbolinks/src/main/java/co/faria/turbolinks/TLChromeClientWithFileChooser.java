@@ -387,8 +387,10 @@ public class TLChromeClientWithFileChooser extends WebChromeClient implements Ac
             @Override
             public void run() {
                 try {
-                    Uri[] resValue = copyFileToCachedDir(finalResValue);
-                    filePathCallback.onReceiveValue(resValue);
+                    if (filePathCallback != null) {
+                        Uri[] resValue = copyFileToCachedDir(finalResValue);
+                        filePathCallback.onReceiveValue(resValue);
+                    }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
