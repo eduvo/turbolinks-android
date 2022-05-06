@@ -490,7 +490,11 @@ public class TurbolinksSession implements TurbolinksSwipeRefreshLayoutCallback, 
                     @Override
                     public void onRefresh() {
                         resetToColdBoot();
-                        turbolinksAdapter.visitProposedToLocationWithAction(location, ACTION_REPLACE);
+                        if (location != null) {
+                            turbolinksAdapter.visitProposedToLocationWithAction(location, ACTION_REPLACE);
+                        } else {
+                            TurbolinksLog.e("visitProposedToLocationWithAction called with NULL location!");
+                        }
                     }
                 });
             }
