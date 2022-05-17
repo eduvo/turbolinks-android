@@ -52,6 +52,7 @@ public class TurbolinksSession implements TurbolinksSwipeRefreshLayoutCallback, 
     // Package public vars (allows for greater flexibility and access for testing)
     // ---------------------------------------------------
 
+    boolean initPageLoading; // During initPageLoading no bridge is injected
     boolean bridgeInjectionInProgress; // Ensures the bridge is only injected once
     boolean coldBootInProgress;
     boolean restoreWithCachedSnapshot;
@@ -63,6 +64,7 @@ public class TurbolinksSession implements TurbolinksSwipeRefreshLayoutCallback, 
     boolean invalidated;
     int progressIndicatorDelay;
     long previousOverrideTime;
+
     Activity activity;
     Fragment fragment;
     HashMap<String, Object> javascriptInterfaces = new HashMap<>();
@@ -127,6 +129,10 @@ public class TurbolinksSession implements TurbolinksSwipeRefreshLayoutCallback, 
         mountWebClient();
     }
 
+    public void setInitPageLoading(Boolean value) {
+        this.initPageLoading = value;
+    }
+
     public void mountWebClient() {
         if (!this.webViewClientAssigned) {
             webViewClientAssigned = true;
@@ -153,8 +159,9 @@ public class TurbolinksSession implements TurbolinksSwipeRefreshLayoutCallback, 
 
                 @Override
                 public void onPageFinished(WebView view, final String location) {
-                    if (!location.equals("about:blank")) {
-                        Log.d("TurbolinksSession", "onPageFinished (WebClient): " + location);
+                    Log.d("TurbolinksSession", "onPageFinished (WebClient): " + location);
+
+                    if (!location.equals("about:blank") || initPageLoading) {
                         String jsCall = "window.webView == null";
                         webView.evaluateJavascript(jsCall, new ValueCallback<String>() {
                             @Override
@@ -175,6 +182,11 @@ public class TurbolinksSession implements TurbolinksSwipeRefreshLayoutCallback, 
                                 }
                             }
                         });
+                    } else {
+                        // notifiy page finished for initPageLoading
+                        if (!location.equals("about:blank")) {
+                            turbolinksAdapter.onPageFinished();
+                        }
                     }
                 }
 
