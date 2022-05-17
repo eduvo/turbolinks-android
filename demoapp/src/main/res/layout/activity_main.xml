@@ -5,9 +5,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <co.faria.turbolinks.TurbolinksView
-        android:id="@+id/turbolinks_view"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fragment_container_view_tag"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        class="co.faria.turbolinks.demo.TurbolinksFragment">
+    </androidx.fragment.app.FragmentContainerView>
 
 </LinearLayout>
