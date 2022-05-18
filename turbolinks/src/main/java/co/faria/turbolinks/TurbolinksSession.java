@@ -160,33 +160,33 @@ public class TurbolinksSession implements TurbolinksSwipeRefreshLayoutCallback, 
 
                 @Override
                 public void onPageFinished(WebView view, final String location) {
-                    Log.d("TurbolinksSession", "onPageFinished (WebClient): " + location);
+                    if (!location.equals("about:blank")) {
+                        Log.d("TurbolinksSession", "onPageFinished (WebClient): " + location);
 
-                    if (!location.equals("about:blank") && !initPageLoading) {
-                        String jsCall = "window.webView == null";
-                        webView.evaluateJavascript(jsCall, new ValueCallback<String>() {
-                            @Override
-                            public void onReceiveValue(String s) {
-                                if (Boolean.parseBoolean(s) && !bridgeInjectionInProgress) {
-                                    bridgeInjectionInProgress = true;
-                                    TurbolinksHelper.injectTurbolinksBridge(TurbolinksSession.this, applicationContext, webView);
-                                    TurbolinksLog.d("Bridge injected");
-
-                                    TurbolinksHelper.runOnMainThread(activity, new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            if (webView != null) { // make sure webView is available
-                                                turbolinksAdapter.onPageFinished();
-                                            }
-                                        }
-                                    });
-                                }
-                            }
-                        });
-                    } else {
-                        // notifiy page finished for initPageLoading
-                        if (!location.equals("about:blank")) {
+                        if (initPageLoading) {
+                            // don't inject JS on initPageLoading
                             turbolinksAdapter.onPageFinished();
+                        } else {
+                            String jsCall = "window.webView == null";
+                            webView.evaluateJavascript(jsCall, new ValueCallback<String>() {
+                                @Override
+                                public void onReceiveValue(String s) {
+                                    if (Boolean.parseBoolean(s) && !bridgeInjectionInProgress) {
+                                        bridgeInjectionInProgress = true;
+                                        TurbolinksHelper.injectTurbolinksBridge(TurbolinksSession.this, applicationContext, webView);
+                                        TurbolinksLog.d("Bridge injected");
+
+                                        TurbolinksHelper.runOnMainThread(activity, new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                if (webView != null) { // make sure webView is available
+                                                    turbolinksAdapter.onPageFinished();
+                                                }
+                                            }
+                                        });
+                                    }
+                                }
+                            });
                         }
                     }
                 }
