@@ -62,7 +62,7 @@ public class TurbolinksSession implements TurbolinksSwipeRefreshLayoutCallback, 
     boolean webViewAttachedToNewParent;
     boolean webViewClientAssigned;
     boolean invalidated;
-    
+
     int progressIndicatorDelay;
     long previousOverrideTime;
 
