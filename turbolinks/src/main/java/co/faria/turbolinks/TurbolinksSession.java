@@ -161,7 +161,7 @@ public class TurbolinksSession implements TurbolinksSwipeRefreshLayoutCallback, 
                 public void onPageFinished(WebView view, final String location) {
                     Log.d("TurbolinksSession", "onPageFinished (WebClient): " + location);
 
-                    if (!location.equals("about:blank") || initPageLoading) {
+                    if (!location.equals("about:blank") && !initPageLoading) {
                         String jsCall = "window.webView == null";
                         webView.evaluateJavascript(jsCall, new ValueCallback<String>() {
                             @Override
