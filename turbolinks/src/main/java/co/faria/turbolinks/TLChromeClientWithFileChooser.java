@@ -92,7 +92,7 @@ public class TLChromeClientWithFileChooser extends WebChromeClient implements Ac
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 Uri url = request.getUrl();
-                if (url != null) {
+                if (url != null && view.getUrl() != null) {
                     Uri current = Uri.parse(view.getUrl());
                     if (url.getHost() != null && (url.getHost().compareToIgnoreCase(current.getHost()) == 0) && turbolinksAdapter != null) {
                         turbolinksAdapter.visitProposedToLocationWithAction(url.toString(), "advance");
