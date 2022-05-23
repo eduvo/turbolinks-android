@@ -94,7 +94,7 @@ public class TLChromeClientWithFileChooser extends WebChromeClient implements Ac
                 Uri url = request.getUrl();
                 if (url != null) {
                     Uri current = Uri.parse(view.getUrl());
-                    if (url.getHost() != null && (url.getHost().compareToIgnoreCase(current.getHost()) == 0)) {
+                    if (url.getHost() != null && (url.getHost().compareToIgnoreCase(current.getHost()) == 0) && turbolinksAdapter != null) {
                         turbolinksAdapter.visitProposedToLocationWithAction(url.toString(), "advance");
                     } else {
                         openExternalURL(activity, url.toString());
