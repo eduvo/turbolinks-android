@@ -404,7 +404,7 @@ public class TLChromeClientWithFileChooser extends WebChromeClient implements Ac
 
     Boolean willCopyToCachedDir(Uri[] sourceUris) {
         for (Uri sourceUri:sourceUris) {
-            if (shouldCopyToCache(sourceUri)) {
+            if (sourceUri != null && shouldCopyToCache(sourceUri)) {
                 return true;
             }
         }
