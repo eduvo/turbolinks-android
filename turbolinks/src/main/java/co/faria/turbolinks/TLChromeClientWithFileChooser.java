@@ -92,9 +92,9 @@ public class TLChromeClientWithFileChooser extends WebChromeClient implements Ac
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
                 Uri url = request.getUrl();
-                if (url != null) {
+                if (url != null && view.getUrl() != null) {
                     Uri current = Uri.parse(view.getUrl());
-                    if (url.getHost() != null && (url.getHost().compareToIgnoreCase(current.getHost()) == 0)) {
+                    if (url.getHost() != null && (url.getHost().compareToIgnoreCase(current.getHost()) == 0) && turbolinksAdapter != null) {
                         turbolinksAdapter.visitProposedToLocationWithAction(url.toString(), "advance");
                     } else {
                         openExternalURL(activity, url.toString());
@@ -404,7 +404,7 @@ public class TLChromeClientWithFileChooser extends WebChromeClient implements Ac
 
     Boolean willCopyToCachedDir(Uri[] sourceUris) {
         for (Uri sourceUri:sourceUris) {
-            if (shouldCopyToCache(sourceUri)) {
+            if (sourceUri != null && shouldCopyToCache(sourceUri)) {
                 return true;
             }
         }
