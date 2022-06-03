@@ -30,6 +30,7 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.FileProvider;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -212,7 +213,11 @@ public class TLChromeClientWithFileChooser extends WebChromeClient implements Ac
         if (type.toLowerCase().contains("image")) {
             this.activity.requestPermissions(new String[]{
                     Manifest.permission.CAMERA}, CAMERA_REQUEST_CODE);
-            pickImage(isCaptureEnabled); // need to make sure you have "android.permission.CAMERA", "android.permission.WRITE_EXTERNAL_STORAGE" permission
+            try {
+                pickImage(isCaptureEnabled); // need to make sure you have "android.permission.CAMERA", "android.permission.WRITE_EXTERNAL_STORAGE" permission
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         } else if (type.toLowerCase().contains("video")) {
             this.activity.requestPermissions(new String[]{
                     Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -245,7 +250,7 @@ public class TLChromeClientWithFileChooser extends WebChromeClient implements Ac
         activity.startActivityForResult(Intent.createChooser(i, "File Chooser"), FILE_CHOOSER_REQUEST_CODE);
     }
 
-    private void pickImage(boolean captureOnly) {
+    private void pickImage(boolean captureOnly) throws IOException {
         boolean hasCapturePermission = (ContextCompat.checkSelfPermission(this.activity, Manifest.permission.CAMERA)
                 == PackageManager.PERMISSION_GRANTED) || (ContextCompat.checkSelfPermission(this.activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 == PackageManager.PERMISSION_GRANTED);
@@ -258,8 +263,11 @@ public class TLChromeClientWithFileChooser extends WebChromeClient implements Ac
 
             Intent iImageCapture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
             iImageCapture.setFlags(FLAG_ACTIVITY_SINGLE_TOP);
-            mediaUri = Uri.fromFile(new File(getImageCaptureCachePath()));
-            iImageCapture.putExtra("output", mediaUri);
+
+            File imageFile = getImageCaptureCacheFile();
+            mediaUri = Uri.fromFile(imageFile);
+
+            iImageCapture.putExtra(MediaStore.EXTRA_OUTPUT, getProvidedImageUri(imageFile));
             activity.startActivityForResult(Intent.createChooser(iImageCapture, "Image Chooser"), FILE_CHOOSER_REQUEST_CODE);
         } else {
             Intent iChooseImage = new Intent(Intent.ACTION_GET_CONTENT);
@@ -274,8 +282,11 @@ public class TLChromeClientWithFileChooser extends WebChromeClient implements Ac
 
                 Intent iImageCapture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                 iImageCapture.setFlags(FLAG_ACTIVITY_SINGLE_TOP);
-                mediaUri = Uri.fromFile(new File(getImageCaptureCachePath()));
-                iImageCapture.putExtra("output", mediaUri);
+
+                File imageFile = getImageCaptureCacheFile();
+                mediaUri = Uri.fromFile(imageFile);
+
+                iImageCapture.putExtra(MediaStore.EXTRA_OUTPUT, getProvidedImageUri(imageFile));
                 iChooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Parcelable[]{iImageCapture});
             } else {
                 iChooser = Intent.createChooser(iChooseImage, "Image Chooser");
@@ -301,8 +312,18 @@ public class TLChromeClientWithFileChooser extends WebChromeClient implements Ac
         activity.startActivityForResult(Intent.createChooser(iImageCapture, "Image Chooser"), FILE_CHOOSER_REQUEST_CODE);
     }
 
-    private String getImageCaptureCachePath() {
-        return activity.getApplicationContext().getExternalFilesDir(android.os.Environment.DIRECTORY_PICTURES).getAbsolutePath() + File.separator + "cached_photo" + System.currentTimeMillis() + ".jpg";
+    private Uri getProvidedImageUri(File imageFile) {
+        String packageName = activity.getPackageName();
+
+        return FileProvider.getUriForFile(activity, packageName + ".fileprovider", imageFile);
+    }
+
+    private File getImageCaptureCacheFile() throws IOException {
+        // Create an image file name
+        String imageFileName = "cached_photo" + System.currentTimeMillis();
+        File storageDir = activity.getExternalFilesDir(android.os.Environment.DIRECTORY_PICTURES);
+
+        return File.createTempFile(imageFileName, ".jpg", storageDir);
     }
 
     private String getVideoCaptureCachePath() {
