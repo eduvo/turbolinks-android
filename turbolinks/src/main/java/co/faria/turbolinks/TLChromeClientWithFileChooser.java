@@ -12,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.net.Uri;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Parcelable;
@@ -222,7 +223,12 @@ public class TLChromeClientWithFileChooser extends WebChromeClient implements Ac
             this.activity.requestPermissions(new String[]{
                     Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE,
                     Manifest.permission.RECORD_AUDIO}, VIDEO_REQUEST_CODE);
-            makeVideo(); // need to make sure you have "android.permission.CAMERA", "android.permission.WRITE_EXTERNAL_STORAGE", "android.permission.RECORD_AUDIO" permission
+            // need to make sure you have "android.permission.CAMERA", "android.permission.WRITE_EXTERNAL_STORAGE", "android.permission.RECORD_AUDIO" permission
+            try {
+                makeVideo();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         } else {
             this.activity.requestPermissions(new String[]{
                     Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -296,7 +302,7 @@ public class TLChromeClientWithFileChooser extends WebChromeClient implements Ac
         }
     }
 
-    private void makeVideo() {
+    private void makeVideo() throws IOException {
         boolean hasPermission = (ContextCompat.checkSelfPermission(this.activity, Manifest.permission.RECORD_AUDIO)
                 == PackageManager.PERMISSION_GRANTED) || (ContextCompat.checkSelfPermission(this.activity, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 == PackageManager.PERMISSION_GRANTED) || (ContextCompat.checkSelfPermission(this.activity, Manifest.permission.CAMERA)
@@ -307,8 +313,11 @@ public class TLChromeClientWithFileChooser extends WebChromeClient implements Ac
         }
         Intent iImageCapture = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
         iImageCapture.setFlags(FLAG_ACTIVITY_SINGLE_TOP);
-        mediaUri = Uri.fromFile(new File(getVideoCaptureCachePath()));
-        iImageCapture.putExtra("output", mediaUri);
+
+        File videoFile = getVideoCaptureCachePath();
+        mediaUri = Uri.fromFile(videoFile);
+
+        iImageCapture.putExtra(MediaStore.EXTRA_OUTPUT, getProvidedImageUri(videoFile));
         activity.startActivityForResult(Intent.createChooser(iImageCapture, "Image Chooser"), FILE_CHOOSER_REQUEST_CODE);
     }
 
@@ -320,14 +329,17 @@ public class TLChromeClientWithFileChooser extends WebChromeClient implements Ac
 
     private File getImageCaptureCacheFile() throws IOException {
         // Create an image file name
-        String imageFileName = "cached_photo" + System.currentTimeMillis();
+        String imageFileName = "temp_photo" + System.currentTimeMillis();
         File storageDir = activity.getExternalFilesDir(android.os.Environment.DIRECTORY_PICTURES);
 
         return File.createTempFile(imageFileName, ".jpg", storageDir);
     }
 
-    private String getVideoCaptureCachePath() {
-        return activity.getApplicationContext().getExternalFilesDir(android.os.Environment.DIRECTORY_PICTURES).getAbsolutePath() + File.separator + "cached_video" + System.currentTimeMillis() + ".mp4";
+    private File getVideoCaptureCachePath() throws IOException {
+        String videoFileName = "temp_video" + System.currentTimeMillis();
+        File storageDir = activity.getExternalFilesDir(Environment.DIRECTORY_MOVIES);
+
+        return File.createTempFile(videoFileName, ".mp4", storageDir);
     }
 
     private void cleanCacheUri() {
@@ -354,13 +366,7 @@ public class TLChromeClientWithFileChooser extends WebChromeClient implements Ac
 
         Uri[] resValue = null;
         // if mediaUri exists, we have generated content => data is null
-        if (mediaUri != null) {
-            File file = new File(mediaUri.getPath());
-            if (file.exists()) {
-                resValue = new Uri[]{mediaUri};
-            }
-        }
-        if (resValue == null && (data != null)) {
+        if (data != null) {
             ClipData clipData = data.getClipData();
             // multiple files selected
             if (clipData != null) {
@@ -370,6 +376,12 @@ public class TLChromeClientWithFileChooser extends WebChromeClient implements Ac
                 }
             } else {
                 resValue = new Uri[]{data.getData()};
+            }
+        }
+        if (resValue == null && mediaUri != null) {
+            File file = new File(mediaUri.getPath());
+            if (file.exists()) {
+                resValue = new Uri[]{mediaUri};
             }
         }
 
