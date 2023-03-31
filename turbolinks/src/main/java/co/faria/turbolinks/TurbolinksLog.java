@@ -37,8 +37,8 @@ class TurbolinksLog {
      * <p>Default log statement called by other convenience methods.</p>
      *
      * @param logLevel Log level of the statement.
-     * @param tag Tag to identify the logging statement.
-     * @param msg Message to log.
+     * @param tag      Tag to identify the logging statement.
+     * @param msg      Message to log.
      */
     private static void log(int logLevel, String tag, String msg) {
         switch (logLevel) {

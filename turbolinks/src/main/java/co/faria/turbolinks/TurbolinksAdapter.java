@@ -22,7 +22,7 @@ public interface TurbolinksAdapter {
     /**
      * <p>Called when the Android WebViewClient's standard onReceivedError callback is fired.</p>
      *
-     * @param message Passed through error message returned by the Android WebViewClient.
+     * @param message   Passed through error message returned by the Android WebViewClient.
      * @param errorCode Passed through error code returned by the Android WebViewClient.
      */
     void onReceivedError(String message, int errorCode);
@@ -41,7 +41,7 @@ public interface TurbolinksAdapter {
     void pageInvalidated();
 
     /**
-     *<p>Called when Turbolinks receives an HTTP error from a Turbolinks request.</p>
+     * <p>Called when Turbolinks receives an HTTP error from a Turbolinks request.</p>
      *
      * @param statusCode HTTP status code returned by the request.
      */
@@ -63,7 +63,7 @@ public interface TurbolinksAdapter {
      * <p>Called when Turbolinks first starts a visit, typically from a link inside a webView.</p>
      *
      * @param location URL to be visited.
-     * @param action Whether to treat the request as an advance (navigating forward) or a replace (back).
+     * @param action   Whether to treat the request as an advance (navigating forward) or a replace (back).
      */
     void visitProposedToLocationWithAction(String location, String action);
 

@@ -1,5 +1,7 @@
 package co.faria.turbolinks;
 
+import static android.os.Looper.getMainLooper;
+
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
@@ -15,9 +17,6 @@ import android.view.View;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-
-import static android.os.Looper.getMainLooper;
 
 /* The internal view hierarchy uses the following structure:
  *

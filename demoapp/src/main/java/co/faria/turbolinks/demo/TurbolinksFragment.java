@@ -24,6 +24,13 @@ public class TurbolinksFragment extends Fragment implements TurbolinksAdapter {
     private TurbolinksView turbolinksView;
 
     @Override
+    public View onCreateView(LayoutInflater inflater,
+                             ViewGroup container,
+                             Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.turbolinks_fragment, container, false);
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
@@ -37,20 +44,6 @@ public class TurbolinksFragment extends Fragment implements TurbolinksAdapter {
         // For this example we set a default location, unless one is passed in through an intent
         location = requireActivity().getIntent().getStringExtra(INTENT_URL) != null ? requireActivity().getIntent().getStringExtra(INTENT_URL) : BASE_URL;
 
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater,
-                             ViewGroup container,
-                             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.turbolinks_fragment, container, false);
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        // Execute the visit
         TurbolinksSession.getDefault(requireActivity())
                 .adapter(this)
                 .fragment(this)

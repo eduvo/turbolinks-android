@@ -15,7 +15,7 @@ import okhttp3.HttpUrl;
  */
 
 public class TLWebviewCookieHandler implements CookieJar {
-    private CookieManager webviewCookieManager = CookieManager.getInstance();
+    private final CookieManager webviewCookieManager = CookieManager.getInstance();
 
     @Override
     public void saveFromResponse(HttpUrl url, List<Cookie> cookies) {
