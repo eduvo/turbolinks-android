@@ -21,8 +21,8 @@ import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.database.Cursor;
 import android.net.Uri;
-import android.os.Environment;
 import android.os.Build;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Parcelable;
@@ -57,15 +57,15 @@ import java.util.Random;
 
 public class TLChromeClientWithFileChooser extends WebChromeClient implements ActivityResultListener {
 
-    private int FILE_CHOOSER_REQUEST_CODE = 1001;
-    private int AUDIO_RECORDER_REQUEST_CODE = 1002;
-    private int CAMERA_REQUEST_CODE = 1003;
-    private int VIDEO_REQUEST_CODE = 1004;
-    private int EXTERNAL_REQUEST_CODE = 1005;
-    private int OTHER_PERMISSION_REQUEST_CODE = 1009;
+    private final int FILE_CHOOSER_REQUEST_CODE = 1001;
+    private final int AUDIO_RECORDER_REQUEST_CODE = 1002;
+    private final int CAMERA_REQUEST_CODE = 1003;
+    private final int VIDEO_REQUEST_CODE = 1004;
+    private final int EXTERNAL_REQUEST_CODE = 1005;
+    private final int OTHER_PERMISSION_REQUEST_CODE = 1009;
 
     private Activity activity;
-    private TurbolinksAdapter turbolinksAdapter;
+    private final TurbolinksAdapter turbolinksAdapter;
     private ValueCallback<Uri[]> filePathCallback;
     private Uri mediaUri;
 
@@ -206,7 +206,6 @@ public class TLChromeClientWithFileChooser extends WebChromeClient implements Ac
         if (activity instanceof TLFileChooserInterceptor) {
             skipDefaultChooser = ((TLFileChooserInterceptor) activity).handleShowFileChooser(this, type, fileChooserParams.isCaptureEnabled(), fileChooserParams.getMode() == FileChooserParams.MODE_OPEN_MULTIPLE);
         }
-        Log.d("testpermissions", "onShowFileChooser. skipDefaultChooser " + skipDefaultChooser + " fileChooserParams " + fileChooserParams + " filePathCallback " + filePathCallback);
 
         if (!skipDefaultChooser) {
             proceedOnType(type, fileChooserParams.isCaptureEnabled(), fileChooserParams.getMode());
@@ -215,8 +214,6 @@ public class TLChromeClientWithFileChooser extends WebChromeClient implements Ac
     }
 
     private void proceedOnType(String type, final boolean isCaptureEnabled, int mode) {
-        Log.d("testpermissions", "proceedOnType " + type + " mode " + mode + " isCaptureEnabled " + isCaptureEnabled);
-
         if (type.toLowerCase().contains("image")) {
             String[] permissions = getPermissionType(TypeForPermission.IMAGE);
             if (permissions.length > 0) {
@@ -263,8 +260,6 @@ public class TLChromeClientWithFileChooser extends WebChromeClient implements Ac
                 list.add(WRITE_EXTERNAL_STORAGE);
                 break;
         }
-        Log.d("testpermissions", "getPermissionType. type " + type + " result  " + (filterStoragePermissions(Arrays.copyOf(list.toArray(), list.size(), String[].class))));
-
         return filterStoragePermissions(Arrays.copyOf(list.toArray(), list.size(), String[].class));
     }
 
@@ -282,7 +277,6 @@ public class TLChromeClientWithFileChooser extends WebChromeClient implements Ac
     }
 
     private void openDefaultChooser(String type, int mode) {
-        Log.d("testpermissions", "openDefaultChooser type " + type + " mode " + mode);
         if (!hasExternalPermission()) {
             clearFileCallback();
             return; // sorry no access
@@ -538,7 +532,7 @@ public class TLChromeClientWithFileChooser extends WebChromeClient implements Ac
             n = Math.abs(n);
         }
 
-        String name = prefix + Long.toString(n) + suffix;
+        String name = prefix + n + suffix;
         File f = new File(dir, name);
         if (!name.equals(f.getName())) {
             if (System.getSecurityManager() != null)

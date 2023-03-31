@@ -11,6 +11,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,7 +23,11 @@ import android.webkit.WebResourceResponse;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
-import android.util.DisplayMetrics;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,14 +36,9 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import okhttp3.*;
-
-import co.faria.turbolinks.R;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * <p>The main concrete class to use Turbolinks 5 in your app.</p>
@@ -236,8 +236,7 @@ public class TurbolinksSession implements TurbolinksSwipeRefreshLayoutCallback, 
 //                }
 
                 @Override
-                public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request)
-                {
+                public WebResourceResponse shouldInterceptRequest(WebView view, WebResourceRequest request) {
                     // do we have a page request with differing Turbolinks-Referrer?
                     if (FIX_TURBOLINK_REFERRER_REDIRECT_CLIENTSIDE && (request.getUrl().toString().equals(location)) &&
                             request.getMethod().equals("GET") &&
@@ -905,7 +904,7 @@ public class TurbolinksSession implements TurbolinksSwipeRefreshLayoutCallback, 
             javascriptInterfaces.put(name, object);
             webView.addJavascriptInterface(object, name);
 
-            TurbolinksLog.d("Adding JavascriptInterface: " + name + " for " + object.getClass().toString());
+            TurbolinksLog.d("Adding JavascriptInterface: " + name + " for " + object.getClass());
         }
     }
 
@@ -1056,11 +1055,11 @@ public class TurbolinksSession implements TurbolinksSwipeRefreshLayoutCallback, 
         String callbackScript = "function() { TurbolinksNative.executeResultCallback(_result); }";
 
         String newScript = script +
-            "if (typeof(webView) !== 'undefined') {" +
+                "if (typeof(webView) !== 'undefined') {" +
                 "webView.afterNextRepaint(" + callbackScript + ");" +
-            "} else { " +
-                "window.requestAnimationFrame(" + callbackScript  + ");" +
-            "}";
+                "} else { " +
+                "window.requestAnimationFrame(" + callbackScript + ");" +
+                "}";
 
         runJavascriptWithEvalResult(newScript, new TurbolinksJSExecutionResultCallback() {
             @Override

@@ -1,7 +1,6 @@
 package co.faria.turbolinks;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.webkit.WebView;
@@ -22,7 +21,7 @@ public class TurbolinkWebView extends WebView {
         void onYClamped();
     }
 
-    private Debounce mDebounce = new Debounce();
+    private final Debounce mDebounce = new Debounce();
     private boolean mIsScrollingActive;
     private boolean mIsTouchActive;
     private int mScrollRangeX;
@@ -36,9 +35,17 @@ public class TurbolinkWebView extends WebView {
         super(context);
     }
 
-    public boolean isScrollingActive() { return mIsScrollingActive; }
-    public int getScrollRangeX() { return mScrollRangeX; }
-    public int getScrollRangeY() { return mScrollRangeY; }
+    public boolean isScrollingActive() {
+        return mIsScrollingActive;
+    }
+
+    public int getScrollRangeX() {
+        return mScrollRangeX;
+    }
+
+    public int getScrollRangeY() {
+        return mScrollRangeY;
+    }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {

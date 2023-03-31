@@ -11,8 +11,8 @@ import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-
 import android.widget.FrameLayout;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -23,7 +23,7 @@ import java.net.URL;
 
 
 class TurbolinksHelper {
-    private static String scriptInjectionFormat =
+    private static final String scriptInjectionFormat =
             "(function(){var script = document.createElement('script'); script.type = 'text/javascript';script.innerHTML = window.atob('%s');document.head.appendChild(script);return true;})()";
 
     // ---------------------------------------------------
@@ -91,7 +91,7 @@ class TurbolinksHelper {
             String jsCall = String.format(scriptInjectionFormat, TurbolinksHelper.getContentFromAssetFile(context, "js/turbolinks_bridge.js"));
             runJavascriptRaw(context, webView, jsCall);
         } catch (IOException e) {
-            TurbolinksLog.e("Error injecting script file into webview: " + e.toString());
+            TurbolinksLog.e("Error injecting script file into webview: " + e);
         }
     }
 
@@ -196,11 +196,12 @@ class TurbolinksHelper {
 class Debounce {
     public static int TOKEN = 1;
     public static int MIN_DEBOUCE_INTERVAL = 10;
-    public static int MIN_DEBOUCE_DEFAULT  = 250;
-    private Handler mHandler = new Handler();
+    public static int MIN_DEBOUCE_DEFAULT = 250;
+    private final Handler mHandler = new Handler();
     public long interval = MIN_DEBOUCE_DEFAULT;
 
-    public Debounce() { }
+    public Debounce() {
+    }
 
     public void clearCallback() {
         if (mHandler.hasMessages(TOKEN)) {
