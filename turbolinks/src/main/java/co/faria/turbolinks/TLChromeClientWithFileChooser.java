@@ -321,9 +321,8 @@ public class TLChromeClientWithFileChooser extends WebChromeClient implements Ac
             iImageCapture.putExtra(MediaStore.EXTRA_OUTPUT, getProvidedImageUri(imageFile));
             activity.startActivityForResult(Intent.createChooser(iImageCapture, "Image Chooser"), FILE_CHOOSER_REQUEST_CODE);
         } else {
-            Intent iChooseImage = new Intent(Intent.ACTION_GET_CONTENT);
+            Intent iChooseImage = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             iChooseImage.setFlags(FLAG_ACTIVITY_SINGLE_TOP);
-            iChooseImage.addCategory(Intent.CATEGORY_OPENABLE);
             iChooseImage.setType("image/*");
 
             Intent iChooser;
