@@ -25,7 +25,6 @@ import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.os.Parcelable;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.text.TextUtils;
@@ -215,15 +214,7 @@ public class TLChromeClientWithFileChooser extends WebChromeClient implements Ac
 
     private void proceedOnType(String type, int mode) {
         if (type.toLowerCase().contains("image")) {
-            String[] permissions = getPermissionType(TypeForPermission.IMAGE);
-            if (permissions.length > 0) {
-                this.activity.requestPermissions(permissions, CAMERA_REQUEST_CODE);
-            }
-            try {
-                pickImage(); // need to make sure you have "android.permission.CAMERA", "android.permission.WRITE_EXTERNAL_STORAGE" permission
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            openDefaultChooser("image/*", mode);
         } else if (type.toLowerCase().contains("video")) {
             String[] permissions = getPermissionType(TypeForPermission.VIDEO);
             if (permissions.length > 0) {
@@ -300,26 +291,6 @@ public class TLChromeClientWithFileChooser extends WebChromeClient implements Ac
             return true;
         }
     }
-
-    private void pickImage() throws IOException {
-        boolean hasCapturePermission =
-                (ContextCompat.checkSelfPermission(activity, CAMERA) == PackageManager.PERMISSION_GRANTED) ||
-                        (ContextCompat.checkSelfPermission(activity, WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED);
-
-            if (!hasCapturePermission) {
-                clearFileCallback();
-                return; // sorry no access
-            }
-
-            Intent iImageCapture = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-            iImageCapture.setFlags(FLAG_ACTIVITY_SINGLE_TOP);
-
-            File imageFile = getImageCaptureCacheFile();
-            mediaUri = Uri.fromFile(imageFile);
-
-            iImageCapture.putExtra(MediaStore.EXTRA_OUTPUT, getProvidedImageUri(imageFile));
-            activity.startActivityForResult(Intent.createChooser(iImageCapture, "Image Chooser"), FILE_CHOOSER_REQUEST_CODE);
-  }
 
     private void makeVideo() throws IOException {
         boolean hasPermission =
